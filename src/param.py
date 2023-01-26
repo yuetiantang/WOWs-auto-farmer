@@ -1,3 +1,5 @@
+from src.util import logPrint
+
 TIME_TOLERANCE = (0, 0.1)
 LOG_MUTE_LEVEL = -1
 WINDOW_TITLE = '《战舰世界》'
@@ -6,6 +8,12 @@ WINDOW_SIZE = (700, 500)
 WINDOW_POSITION = (0, 0)
 DISPLAY_RESOLUTION = (1920, 1080)
 
+origin = (1, 0)
+
+def calibrateOrigin(newOrigin):
+    global origin
+    origin = (newOrigin[0], newOrigin[1])
+    logPrint(2, "[Note] Origin reset at", origin)
 
 # All positions below are relative position.
 
@@ -20,9 +28,16 @@ class Region:
     def center(self):
         return (self.topleft_x + self.bottomright_x) / 2, (self.topleft_y + self.bottomright_y) / 2
 
+    def toAbsoluteRegionCoordinate(self, region):
+        # return coordinates of upper-left point and lower-right point.
+        return region.topleft_x + origin.x, region.topleft_y + origin.y, \
+               region.bottomright_x + origin.x, region.bottomright_y + origin.y
 
+
+# Following coordinates are based on game process origin (0,0), need to convert to absolute coordinates.
 HOME_IDENTIFY_REGION = Region(1178, 0, 1384, 70)
-SEARCHING_INDENTIFY_REGION = Region(1199, 1138, 1352, 1273)
+SEARCHING_IDENTIFY_REGION = Region(1199, 1138, 1352, 1273)
+GAME_COMPLETE_IDENTIFY_REGION = Region(1967, 1305, 2151, 1345)
 
 # todo: frontier of dev
 COMPT_MODE_BUTTON_POSITION = (350, 175)

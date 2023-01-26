@@ -2,6 +2,7 @@
 import sys
 
 from src.util import *
+from src.param import *
 
 
 
@@ -60,10 +61,10 @@ def strategy_IGiveUp():
 # -------- Commands -------- #
 def init(timeout=5):
     logPrint(1, "Script initializing...")
-    global origin
     origin = getGameWindow(timeout)
     if origin is None:
         return False
+    calibrateOrigin(origin)
     return True
 
 
@@ -75,8 +76,11 @@ def startCoopFromHome():
         logPrint(5, 'FATAL: [0-0] Failed to capture game window')
         return
     # todo: Frontier of dev
-    if isHome():
-        clickBattle()
+    while True:
+        if isHome():
+            clickBattle()
+        else:
+            logPrint(3, "[WARNING] Cannot start battle because game is not in the home page.")
     return
     # todo: check main menu.
 
@@ -311,7 +315,7 @@ level2 = 0 / 1 / 6883
 # ---------------------------- #
 if len(sys.argv) > 1 and int(sys.argv[1]):
     DECK = int(sys.argv[1])
-#startCoopFromHome()  # SFW
+startCoopFromHome()  # SFW
 # autoMatch(8, strategy_AFK)
 # test(shouldEndTurn)
 trackMouse(9999)

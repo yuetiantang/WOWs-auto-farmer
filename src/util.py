@@ -34,9 +34,7 @@ def toAbsPosition(relX, relY):
     return relX + origin.x, relY + origin.y
 
 
-def toAbsBox(relBox):
-    # return coordinates of upper-left point and lower-right point.
-    return relBox[0] + origin.x, relBox[1] + origin.y, relBox[2] + origin.x, relBox[3] + origin.y
+
 
 
 def getMouseAbsPosition():
@@ -173,13 +171,16 @@ def clickLaunchGame_02():
 
 def findPngOnScreen(pngName, box, sim):
     if pyautogui.locateOnScreen(pngName + '.png', region=box, confidence=sim):
+        logPrint(1, "Scanned", pngName + '.png', "at", box, "with confidence", sim, "(success)")
         return True
     else:
+        logPrint(1, "Scanned", pngName + '.png', "at", box, "with confidence", sim, "(failed)")
         return False
 
 # todo
+
 def isHome():
-    return findPngOnScreen('../images/battle-bar', toAbsBox(HOME_IDENTIFY_REGION), 0.5)
+    return findPngOnScreen('../images/battle-bar', toAbsoluteRegionCoordinate(HOME_IDENTIFY_REGION), 0.5)
 
 
 def isDefeat():
